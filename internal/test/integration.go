@@ -15,8 +15,12 @@ type Startup struct {
 }
 
 func (s Startup) Arm(operation model.Operation, section string, at time.Time) (track.Lease, error) {
+    lease, err := s.Tracks.Arm(operation.ID, section, operation.Carriage, at)
+    if err != nil {
+        return track.Lease{}, err
+    }
     s.Tests.Put(operation)
-    return s.Tracks.Arm(operation.ID, section, operation.Carriage, at)
+    return lease, nil
 }
 
 func (s Startup) Launch(operation model.Operation, section string, at time.Time) (model.DeviceCommand, error) {

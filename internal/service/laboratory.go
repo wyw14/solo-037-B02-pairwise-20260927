@@ -93,7 +93,6 @@ func NewLaboratory(directory string) (*Laboratory, error) {
 func (l *Laboratory) Exercise(at time.Time) map[string]any {
     span := l.Tracer.Start("laboratory.exercise", at)
     operation := model.NewOperation("commissioning", "benchmark-hull", "section-a", "carriage-1", at)
-    l.Tests.Put(operation)
     startup := testpkg.Startup{Tests: l.Tests, Tracks: l.Tracks, Carriage: l.Carriage}
     lease, leaseErr := startup.Arm(operation, operation.Section, at)
     l.Metrics.Request()
